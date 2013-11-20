@@ -4,6 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 	<link rel="stylesheet" type="text/css" href="main.css">
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-9hHe6l9lcvymMKQlRko7KnIbgUGAlLc&sensor=false"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script type='text/javascript' src='script.js'></script>
@@ -11,11 +12,15 @@
 </head>
 
 <body>
-<input type="text" id="startAddress" />
-<input type="text" id="endAddress" />
-<input type="button" id="submitButton">
+<h1>Route Animator</h1>
+<br><br>
+Start Address: <input type="text" id="startAddress" placeholder="Start Address" />
+<br><br>
+End Address: <input type="text" id="endAddress" placeholder="End Address" />
+<br><br>
+<input type="button" id="submitButton" value="Submit">
 
-<div id="mapImage"></div>
+<br><br><div id="map-canvas"></div>
 
 </body>
 
