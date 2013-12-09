@@ -3,8 +3,11 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<link href='http://fonts.googleapis.com/css?family=Allan:700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Signika+Negative' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="main.css">
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-9hHe6l9lcvymMKQlRko7KnIbgUGAlLc&sensor=false"></script>
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD-9hHe6l9lcvymMKQlRko7KnIbgUGAlLc&sensor=false"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script type='text/javascript' src='script.js'></script>
@@ -12,16 +15,40 @@
 </head>
 
 <body>
-<h1>Route Animator</h1>
-<br><br>
-Start Address: <input type="text" id="startAddress" placeholder="Start Address" />
-<br><br>
-End Address: <input type="text" id="endAddress" placeholder="End Address" />
-<br><br>
+<h1>Show me the Way</h1>
+<h2>1) enter your start and end destinations, </h2>
+<h2>2) hit the 'submit' button or enter, </h2>
+<h2>3) then press play or use the slider bar and/or controls to be taken through your route</h2>
+
+<div id="container">
+
+<div id = "inputs">
+<small id="startLabel">Start Address: </small><input type="text" id="startAddress" placeholder="Start Address" />
+<small id="endlabel">End Address: </small><input type="text" id="endAddress" placeholder="End Address" />
 <input type="button" id="submitButton" value="Submit">
+</div>
 
-<br><br><div id="map-canvas"></div>
 
+<div id="controls">
+<div id="sliderHolder">
+<div id="sliderValue"></div><div id="slider"></div>
+</div>
+<div id="buttonHolder">
+<div id="start" class="nav-button"><span>start</span></div>
+<div id="previous" class="nav-button"><span>prev</span></div>
+<div id="stop" class="nav-button"><span>stop</span></div>
+<div id="play" class="nav-button"><span>play</span></div>
+<div id="next" class="nav-button"><span>next</span></div>
+<div id="end" class="nav-button"><span>end</span></div>
+</div>
+
+</div>
+
+<div id = "imageHolder">
+<div id="mapImage"></div>
+<div class="streetImage" id="left"></div><div class="streetImage" id="ahead"></div><div class="streetImage" id="right"></div>
+</div>
+</div>
 </body>
 
 </html>
