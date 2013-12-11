@@ -66,32 +66,32 @@ var createDirections = function(result, status) {
     var changeHeading = function(point1, point2) {
           
         var lat1, lng1, lat2, lng2;
-        lat1 = result.routes[0].overview_path[point1].pb;
-        lng1 = result.routes[0].overview_path[point1].qb;
-        lat2 = result.routes[0].overview_path[point2].pb;
-        lng2 = result.routes[0].overview_path[point2].qb;
+        lat1 = result.routes[0].overview_path[point1].nb;
+        lng1 = result.routes[0].overview_path[point1].ob;
+        lat2 = result.routes[0].overview_path[point2].nb;
+        lng2 = result.routes[0].overview_path[point2].ob;
         var deltaY = lng2 - lng1;
         var deltaX = lat2 - lat1;
         var angleInDegrees = Math.atan2(deltaY, deltaX) * 180/Math.PI;
         console.log(angleInDegrees);
         return angleInDegrees;
-        /*
-        var dLon = (lng2-lng1);
+        
+        /*var dLon = (lng2-lng1);
         var y = Math.sin(dLon) * Math.cos(lat2);
         var x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
         var brng = (Math.atan2(y, x)) * 180/Math.PI;
-        return 360 - ((brng + 360) % 360);
-        */
+        return 360 - ((brng + 360) % 360);*/
+        
     };
 
     var panAndZoom = function() {
       map.panTo(newCenter); // pan to the new center
-      map.setZoom(16);
+      map.setZoom(17);
       };
 
     var updatePosition = function() {
-        latitude = result.routes[0].overview_path[routePoint].pb;
-        longitude = result.routes[0].overview_path[routePoint].qb;
+        latitude = result.routes[0].overview_path[routePoint].nb;
+        longitude = result.routes[0].overview_path[routePoint].ob;
         newCenter = new google.maps.LatLng(latitude, longitude);
         panorama.ahead.setPosition(newCenter);
         if (routePoint != maxLength)  
@@ -118,17 +118,18 @@ var createDirections = function(result, status) {
         if (routePoint == maxLength)
           return;
         else
-          setTimeout(incrementPosition, 1000); 
+          setTimeout(incrementPosition, 1500); 
         };
 
       directionsDisplay.setDirections(result);  // create directions from the result of directionsService.route()
       directionsDisplay.setMap(map);  // have the directions renderer render the directions on the map
-      latitude = result.routes[0].overview_path[0].pb; // new starting latitude, first point of the route
-      longitude = result.routes[0].overview_path[0].qb; // new starting longitude, first point of the route   
+      latitude = result.routes[0].overview_path[0].nb; // new starting latitude, first point of the route
+      longitude = result.routes[0].overview_path[0].ob; // new starting longitude, first point of the route   
       var newCenter = new google.maps.LatLng(latitude, longitude); // create a LatLng object for the new center
+      setTimeout(panAndZoom, 50); // I found that this function, which re-centers and zooms the map, would not work unless there was a delay - this is due to the asynchronous nature of AJAX
       panorama.ahead.setPosition(newCenter);  // pan to the new center in the street view image
       panorama.ahead.setPov({heading: changeHeading(0, 1), pitch: pitchDefault}); // change the pov to be heading in the correct initial direction
-      
+
 
       $('#sliderValue').text((routePoint + 1) + " / " + maxLength);  
 
@@ -171,7 +172,7 @@ var createDirections = function(result, status) {
         }
       });
 
-      setTimeout(panAndZoom, 100); //this function that re-centers and zooms the map would not work unless there was a delay - this is due to the asynchronous nature of AJAX
+      
     }
   };
 
