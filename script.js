@@ -66,10 +66,10 @@ var createDirections = function(result, status) {
     var changeHeading = function(point1, point2) {
           
         var lat1, lng1, lat2, lng2;
-        lat1 = result.routes[0].overview_path[point1].nb;
-        lng1 = result.routes[0].overview_path[point1].ob;
-        lat2 = result.routes[0].overview_path[point2].nb;
-        lng2 = result.routes[0].overview_path[point2].ob;
+        lat1 = result.routes[0].overview_path[point1].d;
+        lng1 = result.routes[0].overview_path[point1].e;
+        lat2 = result.routes[0].overview_path[point2].d;
+        lng2 = result.routes[0].overview_path[point2].e;
         var deltaY = lng2 - lng1;
         var deltaX = lat2 - lat1;
         var angleInDegrees = Math.atan2(deltaY, deltaX) * 180/Math.PI;
@@ -90,8 +90,8 @@ var createDirections = function(result, status) {
       };
 
     var updatePosition = function() {
-        latitude = result.routes[0].overview_path[routePoint].nb;
-        longitude = result.routes[0].overview_path[routePoint].ob;
+        latitude = result.routes[0].overview_path[routePoint].d;
+        longitude = result.routes[0].overview_path[routePoint].e;
         newCenter = new google.maps.LatLng(latitude, longitude);
         panorama.ahead.setPosition(newCenter);
         if (routePoint != maxLength)  
@@ -123,8 +123,8 @@ var createDirections = function(result, status) {
 
       directionsDisplay.setDirections(result);  // create directions from the result of directionsService.route()
       directionsDisplay.setMap(map);  // have the directions renderer render the directions on the map
-      latitude = result.routes[0].overview_path[0].nb; // new starting latitude, first point of the route
-      longitude = result.routes[0].overview_path[0].ob; // new starting longitude, first point of the route   
+      latitude = result.routes[0].overview_path[0].d; // new starting latitude, first point of the route
+      longitude = result.routes[0].overview_path[0].e; // new starting longitude, first point of the route   
       var newCenter = new google.maps.LatLng(latitude, longitude); // create a LatLng object for the new center
       setTimeout(panAndZoom, 50); // I found that this function, which re-centers and zooms the map, would not work unless there was a delay - this is due to the asynchronous nature of AJAX
       panorama.ahead.setPosition(newCenter);  // pan to the new center in the street view image
