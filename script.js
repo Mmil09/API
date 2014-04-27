@@ -1,5 +1,6 @@
 var mapProp, panoOptionsLeft, panoOptionsAhead, panoOptionsRight, map, panorama;
 var latitude, longitude;
+var latName, longName;
 
 var directionsDisplay = new google.maps.DirectionsRenderer(),
     directionsService = new google.maps.DirectionsService(),
@@ -58,7 +59,26 @@ var toggleControls = function() {
 
 var createDirections = function(result, status) {
     if (status == google.maps.DirectionsStatus.OK) {
+      console.log(result);
 
+      //function to automatically update the changing naming conventions for Google's latitude and longitude points
+      var getLatLngNames = function() {
+        var propCount = 0;
+        for (var x in result.routes[0].overview_path[0]) {
+          if (propCount == 0) {
+            latName = x;
+          }
+          if (propCount == 1) {
+            longName = x;
+          }
+         propCount++;  
+         console.log("lat: " + latName + "  long: " + longName);  
+        }
+      }
+
+    getLatLngNames();
+    
+    
     var routePoint = 0; //will be the universal place-holder that the slider and controls change
     var maxLength = result.routes[0].overview_path.length - 1; //highest number point in the array of the route
     var proceed = true;
@@ -66,10 +86,10 @@ var createDirections = function(result, status) {
     var changeHeading = function(point1, point2) {
           
         var lat1, lng1, lat2, lng2;
-        lat1 = result.routes[0].overview_path[point1].d;
-        lng1 = result.routes[0].overview_path[point1].e;
-        lat2 = result.routes[0].overview_path[point2].d;
-        lng2 = result.routes[0].overview_path[point2].e;
+        lat1 = result.routes[0].overview_path[point1][latName];
+        lng1 = result.routes[0].overview_path[point1][longName];
+        lat2 = result.routes[0].overview_path[point2][latName];
+        lng2 = result.routes[0].overview_path[point2][longName];
         var deltaY = lng2 - lng1;
         var deltaX = lat2 - lat1;
         var angleInDegrees = Math.atan2(deltaY, deltaX) * 180/Math.PI;
@@ -90,8 +110,8 @@ var createDirections = function(result, status) {
       };
 
     var updatePosition = function() {
-        latitude = result.routes[0].overview_path[routePoint].d;
-        longitude = result.routes[0].overview_path[routePoint].e;
+        latitude = result.routes[0].overview_path[routePoint][latName];
+        longitude = result.routes[0].overview_path[routePoint][longName];
         newCenter = new google.maps.LatLng(latitude, longitude);
         panorama.ahead.setPosition(newCenter);
         if (routePoint != maxLength)  
@@ -123,8 +143,8 @@ var createDirections = function(result, status) {
 
       directionsDisplay.setDirections(result);  // create directions from the result of directionsService.route()
       directionsDisplay.setMap(map);  // have the directions renderer render the directions on the map
-      latitude = result.routes[0].overview_path[0].d; // new starting latitude, first point of the route
-      longitude = result.routes[0].overview_path[0].e; // new starting longitude, first point of the route   
+      latitude = result.routes[0].overview_path[0][latName]; // new starting latitude, first point of the route
+      longitude = result.routes[0].overview_path[0][longName]; // new starting longitude, first point of the route   
       var newCenter = new google.maps.LatLng(latitude, longitude); // create a LatLng object for the new center
       setTimeout(panAndZoom, 50); // I found that this function, which re-centers and zooms the map, would not work unless there was a delay - this is due to the asynchronous nature of AJAX
       panorama.ahead.setPosition(newCenter);  // pan to the new center in the street view image
